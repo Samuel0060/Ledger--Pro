@@ -1,7 +1,8 @@
 package com.pluralsight;
 
-import java.io.*;
-import java.time.LocalDateTime;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ledgersHome {
@@ -11,7 +12,7 @@ public class ledgersHome {
 
 
         boolean running = true;
-        while (running){
+        while (running) {
             displayHomeScreen();
             String selectedMenuOption = scanner.next().toUpperCase();
             scanner.nextLine();
@@ -67,33 +68,109 @@ public class ledgersHome {
         System.out.println("Deposit amount");
         double userDeposit = scanner.nextDouble();
         scanner.nextLine();
-        TransactionRecord newInput = new TransactionRecord( description, userVendor, userDeposit);
+        TransactionRecord newInput = new TransactionRecord(description, userVendor, userDeposit);
 
         try {
 
-            FileWriter fileWriter = new FileWriter("transactions.csv",true);
+            FileWriter fileWriter = new FileWriter("transactions.csv", true);
             BufferedWriter bufWriter = new BufferedWriter(fileWriter);
             bufWriter.newLine();
-
-            bufWriter.write(newInput.toString());
+            bufWriter.write(newInput.toFileFormatString());
             bufWriter.close();
 
-            System.out.println(newInput);
+            System.out.println("New Deposit added \n" + newInput.toFileFormatString());
 
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-}
+    }
 
     public static void displayMakePayment() {
-
         System.out.println("Make Payment");
+        System.out.println("------");
+
+        System.out.println("Please provide payment information");
+        System.out.println("Description");
+        String description = scanner.nextLine();
+
+        System.out.println("Vendor");
+        String userVendor = scanner.nextLine();
+
+        System.out.println("Deposit amount");
+        double userDeposit = scanner.nextDouble();
+        scanner.nextLine();
+        TransactionRecord newInput = new TransactionRecord(description, userVendor, userDeposit);
+
+        try {
+
+            FileWriter fileWriter = new FileWriter("transactions.csv", true);
+            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+            bufWriter.write(newInput.toFileFormatString());
+            bufWriter.newLine();
+            bufWriter.close();
+
+            System.out.println("New Payment added \n" + newInput.toString());
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+
+        }
+
+
     }
 
     public static void displayLedger() {
 
+        System.out.println("Ledger!");
+        System.out.println("-----");
+        System.out.println("A - Display all entries");
+        System.out.println("D - Your Deposits");
+        System.out.println("P - Your Payments");
+        System.out.println("R - View Report");
+        System.out.println("H - back to Homepage");
+
+        String userChoice = scanner.next().toUpperCase();
+        scanner.nextLine();
+
+        switch (userChoice) {
+            case "A":
+                displayAllEntries();
+                break;
+
+            case "D":
+                displayDeposits();
+                break;
+
+            case "P":
+                displayPayments();
+                break;
+
+            case "R":
+                viewReports();
+                break;
+
+            case "H":
+                displayHomeScreen();
+                break;
+        }
+    }
+    public static void displayAllEntries() {
+        System.out.println();
     }
 
+    public static void displayDeposits() {
+
+    }
+
+    public static void displayPayments() {
+
+    }
+
+    public static void viewReports() {
+
+    }
 }
+
 

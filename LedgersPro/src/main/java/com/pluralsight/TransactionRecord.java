@@ -14,8 +14,10 @@ public class TransactionRecord {
     private String vendor;
     private double userDeposit;
 
+
+
     public TransactionRecord(String description, String vendor, double userDeposit) {
-        this.depositedOn = depositedOn;
+        this.depositedOn = LocalDateTime.now();
         this.description = description;
         this.vendor = vendor;
         this.userDeposit = userDeposit;
@@ -55,11 +57,21 @@ public class TransactionRecord {
 
     @Override
     public String toString() {
-        return "TransactionRecord{" +
-                "depositedOn=" + depositedOn +
-                ", description='" + description + '\'' +
-                ", vendor='" + vendor + '\'' +
-                ", userDeposit=" + userDeposit +
-                '}';
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
+        String formattedDepositedOn = depositedOn.format(formatter);
+        return formattedDepositedOn + "|"
+                + description + '|' +
+                 vendor + '|'
+                 + "-"+userDeposit;
+                };
+
+    public String toFileFormatString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
+        String formattedDepositedOn = depositedOn.format(formatter);
+        return formattedDepositedOn + "|"
+                + description + '|' +
+                vendor + '|'
+                + "+"+ userDeposit;
     }
-}
+    }
+
