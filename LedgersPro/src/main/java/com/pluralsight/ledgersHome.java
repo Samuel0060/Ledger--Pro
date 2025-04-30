@@ -1,8 +1,8 @@
 package com.pluralsight;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class ledgersHome {
@@ -70,6 +70,7 @@ public class ledgersHome {
         scanner.nextLine();
         TransactionRecord newInput = new TransactionRecord(description, userVendor, userDeposit);
 
+
         try {
 
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
@@ -78,12 +79,16 @@ public class ledgersHome {
             bufWriter.write(newInput.toFileFormatString());
             bufWriter.close();
 
+            System.out.println("\nDeposit recorded!");
+
             System.out.println("New Deposit added \n" + newInput.toFileFormatString());
 
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error writing to file: " + e.getMessage());
         }
+        System.out.println("\nPress Enter to return to the main menu...");
+        scanner.nextLine();
     }
 
     public static void displayMakePayment() {
@@ -97,10 +102,13 @@ public class ledgersHome {
         System.out.println("Vendor");
         String userVendor = scanner.nextLine();
 
-        System.out.println("Deposit amount");
+        System.out.println("Payment amount");
         double userDeposit = scanner.nextDouble();
         scanner.nextLine();
         TransactionRecord newInput = new TransactionRecord(description, userVendor, userDeposit);
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
 
         try {
 
@@ -110,13 +118,17 @@ public class ledgersHome {
             bufWriter.newLine();
             bufWriter.close();
 
+            System.out.println("Payment Recorded!");
+
             System.out.println("New Payment added \n" + newInput.toString());
 
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error writing to file: " + e.getMessage());
 
         }
+        System.out.println("\nPress Enter to return to the main menu...");
+        scanner.nextLine();
 
 
     }
@@ -157,10 +169,28 @@ public class ledgersHome {
         }
     }
     public static void displayAllEntries() {
-        System.out.println();
+        try {
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String all;
+            while((all = bufferedReader.readLine()) != null) {
+                System.out.println(all);
+            }
+
+//            displayHomeScreen();
+            System.out.println("Press Enter to go back to Ledger Menu");
+            scanner.nextLine();
+            displayLedger();
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading transactions.csv file" + e.getMessage());
+        }
+
     }
 
     public static void displayDeposits() {
+
 
     }
 

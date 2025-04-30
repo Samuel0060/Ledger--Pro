@@ -1,7 +1,9 @@
 package com.pluralsight;
 
+import javax.swing.text.DateFormatter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -9,7 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class TransactionRecord {
-    LocalDateTime depositedOn;
+    private String date;
+    private String time;
     private String description;
     private String vendor;
     private double userDeposit;
@@ -17,18 +20,30 @@ public class TransactionRecord {
 
 
     public TransactionRecord(String description, String vendor, double userDeposit) {
-        this.depositedOn = LocalDateTime.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        this.date = LocalDate.now().format(dateFormatter);
+        this.time = LocalTime.now().format(timeFormatter);
         this.description = description;
         this.vendor = vendor;
         this.userDeposit = userDeposit;
     }
 
-    public LocalDateTime getDepositedOn() {
-        return depositedOn;
+    public String getDate() {
+        return date;
     }
 
-    public void setDepositedOn(LocalDateTime depositedOn) {
-        this.depositedOn = depositedOn;
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getDescription() {
@@ -57,21 +72,33 @@ public class TransactionRecord {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
-        String formattedDepositedOn = depositedOn.format(formatter);
-        return formattedDepositedOn + "|"
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//
+//        String formattedDate = LocalDate.now().format(dateFormatter);
+//        String formattedTime = LocalTime.now().format(timeFormatter);
+
+        return date + "|"
+                + time + "|"
                 + description + '|' +
                  vendor + '|'
                  + "-"+userDeposit;
-                };
+                }
 
     public String toFileFormatString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
-        String formattedDepositedOn = depositedOn.format(formatter);
-        return formattedDepositedOn + "|"
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//
+//        String formattedDate = LocalDate.now().format(dateFormatter);
+//        String formattedTime = LocalTime.now().format(timeFormatter);
+//
+
+        return date + "|"
+                + time + "|"
                 + description + '|' +
                 vendor + '|'
-                + "+"+ userDeposit;
+                + "+"+userDeposit;
+
     }
     }
 
