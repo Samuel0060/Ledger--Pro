@@ -373,10 +373,9 @@ public class ledgersApp {
                     TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
                     System.out.println(transaction);
                 }
+                bufferedReader.close();
+            }
 
-
-
-            }bufferedReader.close();
         } catch (IOException e) {
             System.out.println("Error reading transactions.csv: " + e.getMessage());
         }
@@ -384,18 +383,163 @@ public class ledgersApp {
     }
 
     public static void displayPreviousMonth() {
+        try {
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+
+            String transactions;
+
+            LocalDate currentDate = LocalDate.now();
+            LocalDate lastMonthDate = currentDate.minusMonths(1);
+
+            while ((transactions = bufferedReader.readLine()) != null) {
+                String[] tokens = transactions.split("\\|");
+
+                LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
+                LocalDate transactionsDate = addedOn.toLocalDate();
+
+                if (transactionsDate.getMonth() == lastMonthDate.getMonth() &&
+                        transactionsDate.getYear() == currentDate.getYear()) {
+
+                    // Display or process the transaction
+                    String description = tokens[2];
+                    String vendor = tokens[3];
+                    float userDeposit = Float.parseFloat(tokens[4].trim());
+
+                    TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
+                    System.out.println(transaction);
+                }
+                bufferedReader.close();
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading transactions.csv: " + e.getMessage());
+        }
 
     }
 
     public static void displayYearToDate() {
+        System.out.println("Transactions this Year");
+
+        try {
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+
+            String transactions;
+
+            LocalDate currentDate = LocalDate.now();
+
+            while ((transactions = bufferedReader.readLine()) != null) {
+                String[] tokens = transactions.split("\\|");
+
+                LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
+                LocalDate transactionsDate = addedOn.toLocalDate();
+
+                if (transactionsDate.getYear() == currentDate.getYear()) {
+
+                    // Display or process the transaction
+                    String description = tokens[2];
+                    String vendor = tokens[3];
+                    float userDeposit = Float.parseFloat(tokens[4].trim());
+
+                    TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
+                    System.out.println(transaction);
+                }
+                bufferedReader.close();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading transactions.csv: " + e.getMessage());
+        }
 
     }
 
     public static void displayPreviousYear() {
 
+        System.out.println("Last Year's Transactions");
+        System.out.println("-----");
+
+        try {
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+
+            String transactions;
+
+            LocalDate currentDate = LocalDate.now();
+            int lastYearDate = LocalDate.now().getYear() -1;
+
+            while ((transactions = bufferedReader.readLine()) != null) {
+                String[] tokens = transactions.split("\\|");
+
+                LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
+                LocalDate transactionsDate = addedOn.toLocalDate();
+
+                if (transactionsDate.getYear() == lastYearDate) {
+
+                    // Display or process the transaction
+                    String description = tokens[2];
+                    String vendor = tokens[3];
+                    float userDeposit = Float.parseFloat(tokens[4].trim());
+
+                    TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
+                    System.out.println(transaction);
+                }
+
+                bufferedReader.close();
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading transactions.csv: " + e.getMessage());
+        }
     }
 
     public static void displaySearchByVendor() {
+
+        System.out.println("Search for a transaction by vendor");
+        scanner.nextLine();
+        String search = scanner.nextLine().toUpperCase().trim();
+
+
+        try{
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+
+            String byVendor;
+            while ((byVendor = bufferedReader.readLine()) != null) {
+                if (byVendor.trim().isEmpty()) {
+                    continue;
+                }
+                String[] tokens = byVendor.split("\\|");
+
+                if (tokens.length < 5) {
+                    continue;
+                }
+                String vendor = tokens[3].toUpperCase();
+
+                if (search.equals(vendor)) {
+
+                    LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
+                    String description = tokens[2];
+                    float userDeposit = Float.parseFloat(tokens[4].trim());
+
+                    TransactionRecord transactionRecord = new TransactionRecord(addedOn, description, vendor, userDeposit);
+
+                    System.out.println("Transaction Found\n");
+                    System.out.println(transactionRecord);
+                }
+
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading transactions.csv: " + e.getMessage());
+        }
 
     }
 }
