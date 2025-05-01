@@ -1,17 +1,6 @@
 
-TransactionRecord{depositedOn=null, description='Coffee', vendor='Starbucks', userDeposit=7.29}
-TransactionRecord{depositedOn=null, description='Food', vendor='Chipotle', userDeposit=12.99}
-TransactionRecord{depositedOn=null, description='food', vendor='chipotle', userDeposit=12.99}
+2025-05-01|08:05|Work|Bank Of America|+3002.78
 
 
+2025-05-01|08:05|Coffee|Dunkin Donuts|+5.22
 
-
-
-
-
-
-
-
-2025-04-29|03:25:49|groceries|aldis|+56.76
-2025-04-30|08:58:38|coffee|starbucks|+33.0
-2025-04-30|11:48|Food|Chipotle|+45.0
