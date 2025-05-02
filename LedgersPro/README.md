@@ -28,7 +28,14 @@ All transaction data is stored and retrieved from a CSV file (`transactions.csv`
 - Date
 - Time
 - Description
-- Vendor
+![Screenshot (44)](https://github.com/user-attachments/assets/98119ab2-690c-4324-b748-db9770a15f38)
+![![Screenshot (4![Screenshot (43)](https://github.com/user-attachments/assets/09792dcd-a31f-41ae-90a5-29a493c633ca)
+9)](https://github.com/user-attachments/assets/503a77de-a34e-4b91-a73f-2cef801f41da)
+Screenshot (48)](https://github.com/user-attachments/assets/409018ed-d25a-4668-a017-b449cf84aa28)
+- ![Screenshot (46)]![Screenshot (47)](https://github.com/user-attachments/assets/bf5d0d43-f255-4a3b-ad66-23c21fbff9e1)
+(https://github.com/user-attachments/assets/d4640ef7-fc31-4176-99d2-8c379d4204c1)
+V![Screenshot (45)](https://github.com/user-attachments/assets/0449bc00-67ca-44a7-b459-61b4e85b21a2)
+endor
 - Amount
 
 ## 🚀 Getting Started
