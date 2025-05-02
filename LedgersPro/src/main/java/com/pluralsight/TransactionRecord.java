@@ -52,28 +52,43 @@ public class TransactionRecord {
         this.userDeposit = userDeposit;
     }
 
-    @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:MM");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm");
+        String sign = userDeposit >= 0 ? "+" : "-";
+        return formatter.format(addedOn) + "|" +
+                description + "|" +
+                vendor + "|" +
+                sign + String.format("%.2f", Math.abs(userDeposit));
+    }
 
-        return formatter.format(addedOn) + "|"
-                + description + '|' +
-                 vendor + '|'
-                 + "-"+userDeposit;
-                }
 
-    public String toFileFormatString() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:MM|");
-        StringBuilder builder = new StringBuilder();
-        builder.append(addedOn.format(dateFormatter))
-                .append(description)
-                .append("|")
-                .append(vendor)
-                .append("|")
-                .append(String.format("+%.2f",userDeposit))
-                .append("\n");
+//    @Override
+//    public String toString() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm");
+//
+//        return formatter.format(addedOn) + "|"
+//                + description + "|" +
+//                 vendor + "|-"
+//                 +userDeposit;
+//                }
 
-        return builder.toString();
+//    public String toFileFormatString() {
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm|");
+//        StringBuilder builder = new StringBuilder();
+//
+//        String sign = userDeposit >= 0 ? "+" : "-";
+//        float amount = Math.abs(userDeposit);
+//
+//        builder.append(addedOn.format(dateFormatter))
+//                .append(description)
+//                .append("|")
+//                .append(vendor)
+//                .append("|")
+//                .append(sign)
+//                .append(String.format("%.2f",amount))
+//                .append("\n");
+//
+//        return builder.toString();
 
 //
 
@@ -83,5 +98,5 @@ public class TransactionRecord {
 //                + "+"+userDeposit;
 
     }
-    }
+
 

@@ -32,6 +32,10 @@ public class ledgersApp {
                     displayLedger();
                     break;
 
+                case "C":
+                clearTransactions();
+                break;
+
                 case "X":
                     running = false;
                     System.out.println("Goodbye!");
@@ -82,13 +86,13 @@ public class ledgersApp {
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
             BufferedWriter bufWriter = new BufferedWriter(fileWriter);
             bufWriter.newLine();
-            bufWriter.write(newInput.toFileFormatString());
+            bufWriter.write(newInput.toString());
             bufWriter.newLine();
             bufWriter.close();
 
             System.out.println("\nDeposit recorded!");
 
-            System.out.println("New Deposit added \n" + newInput.toFileFormatString() + "\n");
+            System.out.println("New Deposit added \n" + newInput + "\n");
 
 
         } catch (IOException e) {
@@ -122,13 +126,13 @@ public class ledgersApp {
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
             BufferedWriter bufWriter = new BufferedWriter(fileWriter);
             bufWriter.newLine();
-            bufWriter.write(newInput.toFileFormatString());
+            bufWriter.write(newInput.toString());
             bufWriter.newLine();
             bufWriter.close();
 
             System.out.println("Payment Recorded!");
 
-            System.out.println("New Payment added \n" + newInput.toString() + "\n");
+            System.out.println("New Payment added \n" + newInput + "\n");
 
 
         } catch (IOException e) {
@@ -149,6 +153,7 @@ public class ledgersApp {
         System.out.println("D - Your Deposits");
         System.out.println("P - Your Payments");
         System.out.println("R - View Report");
+        System.out.println("C - Clear transactions");
         System.out.println("H - back to Homepage");
 
         String userChoice = scanner.next().toUpperCase();
@@ -169,6 +174,10 @@ public class ledgersApp {
 
             case "R":
                 viewReports();
+                break;
+
+            case "C":
+                clearTransactions();
                 break;
 
             case "H":
@@ -357,7 +366,15 @@ public class ledgersApp {
             LocalDate currentDate = LocalDate.now();
 
             while ((transactions = bufferedReader.readLine()) != null) {
+                if (transactions.trim().isEmpty()) continue;
+
+
                 String[] tokens = transactions.split("\\|");
+                if (tokens.length < 5) {
+                    continue;
+                }
+                tokens[0] = tokens[0].trim();
+                tokens[1] = tokens[1].trim();
 
                 LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
                 LocalDate transactionsDate = addedOn.toLocalDate();
@@ -373,8 +390,12 @@ public class ledgersApp {
                     TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
                     System.out.println(transaction);
                 }
-                bufferedReader.close();
-            }
+
+            }bufferedReader.close();
+            System.out.println("\nPress Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
+
 
         } catch (IOException e) {
             System.out.println("Error reading transactions.csv: " + e.getMessage());
@@ -411,8 +432,12 @@ public class ledgersApp {
                     TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
                     System.out.println(transaction);
                 }
-                bufferedReader.close();
-            }
+
+            }bufferedReader.close();
+            System.out.println("\nPress Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
+
         } catch (IOException e) {
             System.out.println("Error reading transactions.csv: " + e.getMessage());
         }
@@ -449,6 +474,10 @@ public class ledgersApp {
                     System.out.println(transaction);
                 }
                 bufferedReader.close();
+                System.out.println("\nPress Enter to return to the report menu...");
+                scanner.nextLine();
+                viewReports();
+
             }
 
         } catch (IOException e) {
@@ -491,6 +520,10 @@ public class ledgersApp {
                 }
 
                 bufferedReader.close();
+                System.out.println("\nPress Enter to return to the report menu...");
+                scanner.nextLine();
+                viewReports();
+
 
             }
         } catch (IOException e) {
@@ -501,7 +534,9 @@ public class ledgersApp {
     public static void displaySearchByVendor() {
 
         System.out.println("Search for a transaction by vendor");
-        scanner.nextLine();
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         String search = scanner.nextLine().toUpperCase().trim();
 
 
@@ -535,13 +570,41 @@ public class ledgersApp {
                     System.out.println(transactionRecord);
                 }
 
-            }
-            bufferedReader.close();
+            }bufferedReader.close();
+            System.out.println("\nPress Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
+
+
         } catch (IOException e) {
             System.out.println("Error reading transactions.csv: " + e.getMessage());
         }
 
     }
+
+    public static void clearTransactions() {
+        System.out.println("This will erase all transactions. Are you sure? (Y/N)");
+        String confirm = scanner.next().toUpperCase();
+        scanner.nextLine(); // consume newline
+
+        if (confirm.equals("Y")) {
+            try {
+                FileWriter writer = new FileWriter("transactions.csv");
+                // Write only the header back in, or leave blank to fully wipe
+                writer.write("Date|Time|Description|Vendor|Amount\n");
+                writer.close();
+                System.out.println("All transactions have been cleared.");
+            } catch (IOException e) {
+                System.out.println("Error clearing the file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Operation canceled.");
+        }
+
+        System.out.println("\nPress Enter to return to the main menu...");
+        scanner.nextLine();
+    }
+
 }
 
 
