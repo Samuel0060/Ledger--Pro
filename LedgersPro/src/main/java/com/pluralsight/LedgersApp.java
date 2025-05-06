@@ -83,7 +83,7 @@ public class LedgersApp {
 
         try {
 
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv", true));
             bufWriter.newLine();
             bufWriter.write(newInput.toString());
             bufWriter.close();
@@ -121,7 +121,7 @@ public class LedgersApp {
 
         try {
 
-            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv", true));
             bufWriter.newLine();
             bufWriter.write(newInput.toString());
             bufWriter.close();
