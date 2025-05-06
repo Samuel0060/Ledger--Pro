@@ -2,7 +2,6 @@ package com.pluralsight;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
 
 public class TransactionRecord {
     LocalDateTime addedOn;
@@ -52,25 +51,23 @@ public class TransactionRecord {
         this.userDeposit = userDeposit;
     }
 
+    @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm");
-        String sign = userDeposit >= 0 ? "+" : "-";
-        return formatter.format(addedOn) + "|" +
-                description + "|" +
-                vendor + "|" +
-                sign + String.format("%.2f", Math.abs(userDeposit));
+        String date = addedOn.toLocalDate().toString(); // yyyy-MM-dd
+        String time = addedOn.toLocalTime().withNano(0).toString(); // HH:mm:ss
+        return date + "|" + time + "|" + description + "|" + vendor + "|" + String.format("%.2f", userDeposit);
     }
 
 
-//    @Override
-//    public String toString() {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm");
-//
-//        return formatter.format(addedOn) + "|"
-//                + description + "|" +
-//                 vendor + "|-"
-//                 +userDeposit;
-//                }
+
+    public String toFileFormatString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm");
+
+        return formatter.format(addedOn) + "|"
+                + description + "|" +
+                 vendor + "|-"
+                 +userDeposit;
+                }
 
 //    public String toFileFormatString() {
 //        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm|");

@@ -1,13 +1,13 @@
 package com.pluralsight;
 
-import java.awt.desktop.SystemEventListener;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class ledgersApp {
+public class LedgersApp {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -83,22 +83,20 @@ public class ledgersApp {
 
         try {
 
-            FileWriter fileWriter = new FileWriter("transactions.csv", true);
-            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
             bufWriter.newLine();
             bufWriter.write(newInput.toString());
-            bufWriter.newLine();
             bufWriter.close();
 
-            System.out.println("\nDeposit recorded!");
+            System.out.println("Deposit recorded!");
 
-            System.out.println("New Deposit added \n" + newInput + "\n");
+            System.out.println("New Deposit added \n" + newInput);
 
 
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
-        System.out.println("\nPress Enter to return to the main menu...");
+        System.out.println("Press Enter to return to the main menu...");
         scanner.nextLine();
     }
 
@@ -114,7 +112,7 @@ public class ledgersApp {
         String userVendor = scanner.nextLine();
 
         System.out.println("Payment amount");
-        double userDeposit = scanner.nextDouble();
+        double userDeposit = -Math.abs(scanner.nextDouble());
         scanner.nextLine();
 
         LocalDateTime addedOn = LocalDateTime.now();
@@ -123,23 +121,21 @@ public class ledgersApp {
 
         try {
 
-            FileWriter fileWriter = new FileWriter("transactions.csv", true);
-            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
             bufWriter.newLine();
             bufWriter.write(newInput.toString());
-            bufWriter.newLine();
             bufWriter.close();
 
             System.out.println("Payment Recorded!");
 
-            System.out.println("New Payment added \n" + newInput + "\n");
+            System.out.println("New Payment added \n" + newInput);
 
 
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
 
         }
-        System.out.println("\nPress Enter to return to the main menu...");
+        System.out.println("Press Enter to return to the main menu...");
         scanner.nextLine();
 
 
@@ -192,11 +188,10 @@ public class ledgersApp {
         System.out.println("-----");
         System.out.println();
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
             bufferedReader.readLine();
 
-//            FileWriter fileWriter = new FileWriter("transactions.csv");
+//            FileWriter fileWriter = new FileWriter("sample_25_transactions.csv");
 //            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
 
@@ -222,13 +217,12 @@ public class ledgersApp {
         System.out.println();
 
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String deposits;
-            while ((deposits = bufferedReader.readLine()) != null) {
+            while ((deposits = reader.readLine()) != null) {
                 String[] tokens = deposits.split("\\|");
 
 
@@ -253,7 +247,7 @@ public class ledgersApp {
             System.out.println("Press Enter to go back to Ledger Menu");
             scanner.nextLine();
             displayLedger();
-            bufferedReader.close();
+            reader.close();
 
 
         } catch (IOException e) {
@@ -267,13 +261,12 @@ public class ledgersApp {
         System.out.println();
 
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String payments;
-            while ((payments = bufferedReader.readLine()) != null) {
+            while ((payments = reader.readLine()) != null) {
                 String[] tokens = payments.split("\\|");
 
 
@@ -299,11 +292,11 @@ public class ledgersApp {
             System.out.println("Press Enter to go back to Ledger Menu");
             scanner.nextLine();
             displayLedger();
-            bufferedReader.close();
+            reader.close();
 
 
         } catch (IOException e) {
-            System.out.println("Error reading deposits." + e.getMessage());
+            System.out.println("Error reading payments." + e.getMessage());
         }
 
     }
@@ -355,17 +348,17 @@ public class ledgersApp {
     public static void displayMonthToDate() {
         System.out.println("Transactions this month");
 
+        List<TransactionRecord> records = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String transactions;
 
             LocalDate currentDate = LocalDate.now();
 
-            while ((transactions = bufferedReader.readLine()) != null) {
+            while ((transactions = reader.readLine()) != null) {
                 if (transactions.trim().isEmpty()) continue;
 
 
@@ -376,7 +369,7 @@ public class ledgersApp {
                 tokens[0] = tokens[0].trim();
                 tokens[1] = tokens[1].trim();
 
-                LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
+                LocalDateTime addedOn = LocalDateTime.parse(tokens[0].trim() + "T" + tokens[1].trim());
                 LocalDate transactionsDate = addedOn.toLocalDate();
 
                 if (transactionsDate.getMonth() == currentDate.getMonth() &&
@@ -388,35 +381,49 @@ public class ledgersApp {
                     float userDeposit = Float.parseFloat(tokens[4].trim());
 
                     TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
-                    System.out.println(transaction);
-                }
+                    records.add(transaction);
 
-            }bufferedReader.close();
-            System.out.println("\nPress Enter to return to the report menu...");
-            scanner.nextLine();
-            viewReports();
+                }
+            }
+            reader.close();
+
+            if (records.isEmpty()) {
+                System.out.println("No transactions found for this month.");
+            } else {
+                sortNewestFirst(records);
+                for (TransactionRecord record : records) {
+                    System.out.println(record);
+                }
+            }
 
 
         } catch (IOException e) {
-            System.out.println("Error reading transactions.csv: " + e.getMessage());
+            System.out.println("Error reading SampleTransactions.csv: " + e.getMessage());
         }
+            System.out.println("Press Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
 
     }
 
     public static void displayPreviousMonth() {
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String transactions;
 
             LocalDate currentDate = LocalDate.now();
             LocalDate lastMonthDate = currentDate.minusMonths(1);
+            boolean found = false;
 
-            while ((transactions = bufferedReader.readLine()) != null) {
+            while ((transactions = reader.readLine()) != null) {
                 String[] tokens = transactions.split("\\|");
+
+                if (tokens.length < 5) {
+                    continue;
+                }
 
                 LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
                 LocalDate transactionsDate = addedOn.toLocalDate();
@@ -431,16 +438,23 @@ public class ledgersApp {
 
                     TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
                     System.out.println(transaction);
+                    found = true;
                 }
 
-            }bufferedReader.close();
-            System.out.println("\nPress Enter to return to the report menu...");
-            scanner.nextLine();
-            viewReports();
+            }reader.close();
+
+
+            if (!found) {
+                System.out.println("Transaction not recorded");
+            }
+
 
         } catch (IOException e) {
-            System.out.println("Error reading transactions.csv: " + e.getMessage());
+            System.out.println("Error reading SampleTransactions.csv: " + e.getMessage());
         }
+            System.out.println("Press Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
 
     }
 
@@ -448,17 +462,20 @@ public class ledgersApp {
         System.out.println("Transactions this Year");
 
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String transactions;
 
             LocalDate currentDate = LocalDate.now();
+            boolean found = false;
 
-            while ((transactions = bufferedReader.readLine()) != null) {
+            while ((transactions = reader.readLine()) != null) {
                 String[] tokens = transactions.split("\\|");
+                if (tokens.length < 5) {
+                    continue;
+                }
 
                 LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
                 LocalDate transactionsDate = addedOn.toLocalDate();
@@ -472,17 +489,19 @@ public class ledgersApp {
 
                     TransactionRecord transaction = new TransactionRecord(addedOn, description, vendor, userDeposit);
                     System.out.println(transaction);
+                    found = true;
                 }
-                bufferedReader.close();
-                System.out.println("\nPress Enter to return to the report menu...");
-                scanner.nextLine();
-                viewReports();
+            }reader.close();
 
+            if (!found) {
+                System.out.println("No transactions recorded.");
             }
-
         } catch (IOException e) {
-            System.out.println("Error reading transactions.csv: " + e.getMessage());
+            System.out.println("Error reading SampleTransactions.csv: " + e.getMessage());
         }
+            System.out.println("\nPress Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
 
     }
 
@@ -492,18 +511,20 @@ public class ledgersApp {
         System.out.println("-----");
 
         try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String transactions;
 
             LocalDate currentDate = LocalDate.now();
             int lastYearDate = LocalDate.now().getYear() -1;
 
-            while ((transactions = bufferedReader.readLine()) != null) {
+            while ((transactions = reader.readLine()) != null) {
                 String[] tokens = transactions.split("\\|");
+                if (tokens.length < 5) {
+                    continue;
+                }
 
                 LocalDateTime addedOn = LocalDateTime.parse(tokens[0] + "T" + tokens[1]);
                 LocalDate transactionsDate = addedOn.toLocalDate();
@@ -519,35 +540,35 @@ public class ledgersApp {
                     System.out.println(transaction);
                 }
 
-                bufferedReader.close();
-                System.out.println("\nPress Enter to return to the report menu...");
-                scanner.nextLine();
-                viewReports();
 
-
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading transactions.csv: " + e.getMessage());
+            } reader.close();
         }
+        catch (IOException e) {
+            System.out.println("Error reading SampleTransactions.csv: " + e.getMessage());
+        }
+            System.out.println("Press Enter to return to the report menu...");
+            scanner.nextLine();
+            viewReports();
     }
 
     public static void displaySearchByVendor() {
-
+    Scanner input = new Scanner(System.in);
         System.out.println("Search for a transaction by vendor");
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
-        String search = scanner.nextLine().toUpperCase().trim();
+//        if (scanner.hasNextLine()) {
+//            scanner.nextLine();
+//        }
+        String search = input.nextLine().trim().toUpperCase();
 
 
         try{
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Pluralsight\\LearntoCodeCapstone\\Ledger--Pro\\LedgersPro\\SampleTransactions.csv"));
 
-            bufferedReader.readLine();
+            reader.readLine();
 
             String byVendor;
-            while ((byVendor = bufferedReader.readLine()) != null) {
+            boolean found = false;
+
+            while ((byVendor = reader.readLine()) != null) {
                 if (byVendor.trim().isEmpty()) {
                     continue;
                 }
@@ -556,7 +577,7 @@ public class ledgersApp {
                 if (tokens.length < 5) {
                     continue;
                 }
-                String vendor = tokens[3].toUpperCase();
+                String vendor = tokens[3].trim().toUpperCase();
 
                 if (search.equals(vendor)) {
 
@@ -568,18 +589,23 @@ public class ledgersApp {
 
                     System.out.println("Transaction Found\n");
                     System.out.println(transactionRecord);
+                    found = true;
                 }
+            }
 
-            }bufferedReader.close();
-            System.out.println("\nPress Enter to return to the report menu...");
-            scanner.nextLine();
-            viewReports();
+            reader.close();
+
+            if (!found) {
+                System.out.println("No transaction found for vendor:" + search);
+            }
+            System.out.println("Press Enter to return to the report menu...");
+
 
 
         } catch (IOException e) {
-            System.out.println("Error reading transactions.csv: " + e.getMessage());
-        }
-
+            System.out.println("Error reading SampleTransactions.csv: " + e.getMessage());
+        }   input.nextLine();
+            viewReports();
     }
 
     public static void clearTransactions() {
@@ -589,7 +615,7 @@ public class ledgersApp {
 
         if (confirm.equals("Y")) {
             try {
-                FileWriter writer = new FileWriter("transactions.csv");
+                FileWriter writer = new FileWriter("SampleTransactions.csv");
                 // Write only the header back in, or leave blank to fully wipe
                 writer.write("Date|Time|Description|Vendor|Amount\n");
                 writer.close();
@@ -605,6 +631,9 @@ public class ledgersApp {
         scanner.nextLine();
     }
 
+    public static void sortNewestFirst(List<TransactionRecord> records) {
+        records.sort((a, b) -> b.getAddedOn().compareTo(a.getAddedOn()));
+    }
 }
 
 
